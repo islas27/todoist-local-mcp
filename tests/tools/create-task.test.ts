@@ -55,6 +55,15 @@ describe("handleCreateTask", () => {
     expect(result.content[0].text).toContain("Walk the dog");
     expect(result.content[0].text).toContain("ID: 7");
   });
+
+  it("forwards section_id to client when provided", async () => {
+    const task = makeTask({ id: "10", content: "Home Lab task" });
+    const client = makeClient(task);
+    await handleCreateTask({ content: "Home Lab task", section_id: "s42" }, client);
+    expect(client.createTask).toHaveBeenCalledWith(
+      expect.objectContaining({ section_id: "s42" })
+    );
+  });
 });
 
 describe("CreateTaskSchema", () => {

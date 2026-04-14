@@ -269,6 +269,84 @@ describe("TodoistClient", () => {
     });
   });
 
+  // ── 1.8 getProjects ─────────────────────────────────────────────────────
+
+  describe("getProjects", () => {
+    it("GETs /projects", async () => {
+      mockFetch.mockResolvedValue(ok({ results: [] }));
+      await client.getProjects();
+      expect(mockFetch.mock.calls[0][0]).toBe(`${BASE_URL}/projects`);
+    });
+
+    it("unwraps results envelope", async () => {
+      const projects = [{ id: "p1", name: "Inbox", inbox_project: true, is_favorite: false }];
+      mockFetch.mockResolvedValue(ok({ results: projects }));
+      const result = await client.getProjects();
+      expect(result).toEqual(projects);
+    });
+
+    it("does not send X-Request-Id", async () => {
+      mockFetch.mockResolvedValue(ok({ results: [] }));
+      await client.getProjects();
+      const headers = mockFetch.mock.calls[0][1].headers as Record<string, string>;
+      expect(headers["X-Request-Id"]).toBeUndefined();
+    });
+  });
+
+  // ── 1.9 getLabels ───────────────────────────────────────────────────────
+
+  describe("getLabels", () => {
+    it("GETs /labels", async () => {
+      mockFetch.mockResolvedValue(ok({ results: [] }));
+      await client.getLabels();
+      expect(mockFetch.mock.calls[0][0]).toBe(`${BASE_URL}/labels`);
+    });
+
+    it("unwraps results envelope", async () => {
+      const labels = [{ id: "l1", name: "Home", color: "green", order: 1, is_favorite: false }];
+      mockFetch.mockResolvedValue(ok({ results: labels }));
+      const result = await client.getLabels();
+      expect(result).toEqual(labels);
+    });
+
+    it("does not send X-Request-Id", async () => {
+      mockFetch.mockResolvedValue(ok({ results: [] }));
+      await client.getLabels();
+      const headers = mockFetch.mock.calls[0][1].headers as Record<string, string>;
+      expect(headers["X-Request-Id"]).toBeUndefined();
+    });
+  });
+
+  // ── 1.10 getSections ────────────────────────────────────────────────────
+
+  describe("getSections", () => {
+    it("GETs /sections with no query param when project_id omitted", async () => {
+      mockFetch.mockResolvedValue(ok({ results: [] }));
+      await client.getSections();
+      expect(mockFetch.mock.calls[0][0]).toBe(`${BASE_URL}/sections`);
+    });
+
+    it("GETs /sections?project_id=... when project_id provided", async () => {
+      mockFetch.mockResolvedValue(ok({ results: [] }));
+      await client.getSections("p42");
+      expect(mockFetch.mock.calls[0][0]).toBe(`${BASE_URL}/sections?project_id=p42`);
+    });
+
+    it("unwraps results envelope", async () => {
+      const sections = [{ id: "s1", name: "Home Lab", project_id: "p1", section_order: 1, is_archived: false, is_deleted: false }];
+      mockFetch.mockResolvedValue(ok({ results: sections }));
+      const result = await client.getSections("p1");
+      expect(result).toEqual(sections);
+    });
+
+    it("does not send X-Request-Id", async () => {
+      mockFetch.mockResolvedValue(ok({ results: [] }));
+      await client.getSections();
+      const headers = mockFetch.mock.calls[0][1].headers as Record<string, string>;
+      expect(headers["X-Request-Id"]).toBeUndefined();
+    });
+  });
+
   // ── 1.8 Error handling ──────────────────────────────────────────────────
 
   describe("Error handling", () => {

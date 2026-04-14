@@ -4,6 +4,9 @@ import type {
   GetTasksParams,
   CreateTaskParams,
   UpdateTaskParams,
+  TodoistProject,
+  TodoistLabel,
+  TodoistSection,
 } from "./types.js";
 
 const BASE_URL = "https://api.todoist.com/api/v1";
@@ -99,5 +102,21 @@ export class TodoistClient {
 
   deleteTask(id: string): Promise<void> {
     return this.request<void>("DELETE", `/tasks/${id}`, undefined, true);
+  }
+
+  async getProjects(): Promise<TodoistProject[]> {
+    const response = await this.request<{ results: TodoistProject[] }>("GET", "/projects");
+    return response.results;
+  }
+
+  async getLabels(): Promise<TodoistLabel[]> {
+    const response = await this.request<{ results: TodoistLabel[] }>("GET", "/labels");
+    return response.results;
+  }
+
+  async getSections(project_id?: string): Promise<TodoistSection[]> {
+    const qs = project_id ? `?project_id=${encodeURIComponent(project_id)}` : "";
+    const response = await this.request<{ results: TodoistSection[] }>("GET", `/sections${qs}`);
+    return response.results;
   }
 }

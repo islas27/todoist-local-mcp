@@ -49,6 +49,19 @@ Task completion is tracked here. After each delegated task, run `./scripts/valid
 
 ---
 
+## Phase 6 — Project, Label & Section Discovery
+
+- [x] **6.1** — Add `TodoistProject`, `TodoistLabel`, `TodoistSection` types; add `section_id` to task params (`src/types.ts`)
+- [x] **6.2** — Add `getProjects()`, `getLabels()`, `getSections()` to `TodoistClient` (`src/todoist-client.ts`)
+- [x] **6.3** — `get_projects` tool (`src/tools/get-projects.ts`)
+- [x] **6.4** — `get_labels` tool (`src/tools/get-labels.ts`)
+- [x] **6.5** — `get_sections` tool (`src/tools/get-sections.ts`)
+- [x] **6.6** — Add `section_id` to `create_task` and `update_task` schemas
+- [x] **6.7** — Wire tools in server entry point (`src/index.ts`)
+- [x] **6.8** — Tests: client methods + tool handlers
+
+---
+
 ## Execution Order
 
 ```

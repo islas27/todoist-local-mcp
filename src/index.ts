@@ -7,6 +7,9 @@ import { CreateTaskSchema, handleCreateTask } from "./tools/create-task.js";
 import { UpdateTaskSchema, handleUpdateTask } from "./tools/update-task.js";
 import { CompleteTaskSchema, handleCompleteTask } from "./tools/complete-task.js";
 import { DeleteTaskSchema, handleDeleteTask } from "./tools/delete-task.js";
+import { GetProjectsSchema, handleGetProjects } from "./tools/get-projects.js";
+import { GetLabelsSchema, handleGetLabels } from "./tools/get-labels.js";
+import { GetSectionsSchema, handleGetSections } from "./tools/get-sections.js";
 
 const token = process.env.TODOIST_TOKEN;
 if (!token) {
@@ -54,6 +57,27 @@ server.tool(
   "Delete a Todoist task by ID.",
   DeleteTaskSchema.shape,
   async (input) => handleDeleteTask(input, client)
+);
+
+server.tool(
+  "get_projects",
+  "List all Todoist projects with their IDs.",
+  GetProjectsSchema.shape,
+  async (input) => handleGetProjects(input, client)
+);
+
+server.tool(
+  "get_labels",
+  "List all personal Todoist labels.",
+  GetLabelsSchema.shape,
+  async (input) => handleGetLabels(input, client)
+);
+
+server.tool(
+  "get_sections",
+  "List sections within a Todoist project (board columns). Pass project_id to filter.",
+  GetSectionsSchema.shape,
+  async (input) => handleGetSections(input, client)
 );
 
 const transport = new StdioServerTransport();
