@@ -128,7 +128,7 @@ else
   IFS=',' read -ra EXPORTS <<< "${EXPORTS_LIST}"
   for RAW_EXPORT in "${EXPORTS[@]}"; do
     EXPORT_NAME="${RAW_EXPORT// /}"  # trim spaces
-    if grep -qE "(export (const|class|interface|type|function|enum) ${EXPORT_NAME}[^a-zA-Z0-9_]|export \{[^}]*[[:space:]]${EXPORT_NAME}[[:space:],}])" "${TARGET_FILE}" 2>/dev/null; then
+    if grep -qE "(export (async )?(const|class|interface|type|function|enum) ${EXPORT_NAME}[^a-zA-Z0-9_]|export \{[^}]*[[:space:]]${EXPORT_NAME}[[:space:],}])" "${TARGET_FILE}" 2>/dev/null; then
       pass "export '${EXPORT_NAME}' found"
     else
       fail "export '${EXPORT_NAME}' NOT found in ${TARGET_FILE}"

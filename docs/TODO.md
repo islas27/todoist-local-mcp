@@ -20,11 +20,11 @@ Task completion is tracked here. After each delegated task, run `./scripts/valid
 
 ## Phase 2 — Tool Definitions
 
-- [ ] **2.1** — `get_tasks` tool (`src/tools/get-tasks.ts`)
-- [ ] **2.2** — `create_task` tool (`src/tools/create-task.ts`)
-- [ ] **2.3** — `update_task` tool (`src/tools/update-task.ts`)
-- [ ] **2.4** — `complete_task` tool (`src/tools/complete-task.ts`)
-- [ ] **2.5** — `delete_task` tool (`src/tools/delete-task.ts`)
+- [x] **2.1** — `get_tasks` tool (`src/tools/get-tasks.ts`)
+- [x] **2.2** — `create_task` tool (`src/tools/create-task.ts`)
+- [x] **2.3** — `update_task` tool (`src/tools/update-task.ts`)
+- [x] **2.4** — `complete_task` tool (`src/tools/complete-task.ts`)
+- [x] **2.5** — `delete_task` tool (`src/tools/delete-task.ts`)
 
 ---
 
