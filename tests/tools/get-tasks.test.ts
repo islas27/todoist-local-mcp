@@ -50,8 +50,14 @@ describe("handleGetTasks", () => {
     ]);
     const result = await handleGetTasks({}, client);
     const text = result.content[0].text;
-    expect(text).toContain("1. [P1] Buy milk");
-    expect(text).toContain("2. [P3] Write tests");
+    expect(text).toContain("1. [P1] Buy milk (id: 1)");
+    expect(text).toContain("2. [P3] Write tests (id: 2)");
+  });
+
+  it("includes task id in output", async () => {
+    const client = makeClient([makeTask({ id: "abc123", content: "Do thing" })]);
+    const result = await handleGetTasks({}, client);
+    expect(result.content[0].text).toContain("(id: abc123)");
   });
 
   it("includes due date in output when present", async () => {
