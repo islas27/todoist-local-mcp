@@ -67,40 +67,50 @@ describe("TodoistClient", () => {
 
   describe("getTasks", () => {
     it("fetches all tasks with no query params when called bare", async () => {
-      mockFetch.mockResolvedValue(ok([]));
+      mockFetch.mockResolvedValue(ok({ results: [] }));
       await client.getTasks();
       expect(mockFetch.mock.calls[0][0]).toBe(`${BASE_URL}/tasks`);
     });
 
     it("adds project_id to query string", async () => {
-      mockFetch.mockResolvedValue(ok([]));
+      mockFetch.mockResolvedValue(ok({ results: [] }));
       await client.getTasks({ project_id: "abc" });
       expect(mockFetch.mock.calls[0][0]).toContain("project_id=abc");
     });
 
     it("adds label to query string", async () => {
-      mockFetch.mockResolvedValue(ok([]));
+      mockFetch.mockResolvedValue(ok({ results: [] }));
       await client.getTasks({ label: "work" });
       expect(mockFetch.mock.calls[0][0]).toContain("label=work");
     });
 
     it("adds filter to query string", async () => {
-      mockFetch.mockResolvedValue(ok([]));
+      mockFetch.mockResolvedValue(ok({ results: [] }));
       await client.getTasks({ filter: "today" });
       expect(mockFetch.mock.calls[0][0]).toContain("filter=today");
     });
 
     it("returns parsed TodoistTask array", async () => {
       const tasks = [{ id: "1", content: "Buy milk" }];
-      mockFetch.mockResolvedValue(ok(tasks));
+      mockFetch.mockResolvedValue(ok({ results: tasks }));
       const result = await client.getTasks();
       expect(result).toEqual(tasks);
     });
 
     it("returns empty array without error", async () => {
-      mockFetch.mockResolvedValue(ok([]));
+      mockFetch.mockResolvedValue(ok({ results: [] }));
       const result = await client.getTasks();
       expect(result).toEqual([]);
+    });
+
+    it("unwraps paginated envelope — does not return the raw response object", async () => {
+      // Regression: API v1 wraps tasks in { results: [...], next_cursor: ... }.
+      // getTasks must return the array, not the envelope, or .forEach() throws.
+      const tasks = [{ id: "1", content: "Buy milk" }];
+      mockFetch.mockResolvedValue(ok({ results: tasks, next_cursor: null }));
+      const result = await client.getTasks();
+      expect(Array.isArray(result)).toBe(true);
+      expect(result).toEqual(tasks);
     });
   });
 

@@ -68,13 +68,17 @@ export class TodoistClient {
     return response.json() as Promise<T>;
   }
 
-  getTasks(params?: GetTasksParams): Promise<TodoistTask[]> {
+  async getTasks(params?: GetTasksParams): Promise<TodoistTask[]> {
     const query = new URLSearchParams();
     if (params?.project_id) query.set("project_id", params.project_id);
     if (params?.label) query.set("label", params.label);
     if (params?.filter) query.set("filter", params.filter);
     const qs = query.toString();
-    return this.request<TodoistTask[]>("GET", `/tasks${qs ? `?${qs}` : ""}`);
+    const response = await this.request<{ results: TodoistTask[] }>(
+      "GET",
+      `/tasks${qs ? `?${qs}` : ""}`
+    );
+    return response.results;
   }
 
   getTask(id: string): Promise<TodoistTask> {
