@@ -44,8 +44,8 @@ Task completion is tracked here. After each delegated task, run `./scripts/valid
 
 ## Phase 5 — Documentation & Config
 
-- [ ] **5.1** — README (`README.md`)
-- [ ] **5.2** — Claude Desktop / Claude Code config snippets (part of README)
+- [x] **5.1** — README (`README.md`)
+- [x] **5.2** — Claude Desktop / Claude Code config snippets (part of README)
 
 ---
 
