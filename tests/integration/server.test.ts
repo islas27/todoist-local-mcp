@@ -87,7 +87,7 @@ describe("MCP server integration", { timeout: 15000 }, () => {
 
     const tools = response.result.tools;
     expect(Array.isArray(tools)).toBe(true);
-    expect(tools).toHaveLength(5);
+    expect(tools).toHaveLength(8);
 
     const names = tools.map((t) => t.name);
     expect(names).toContain("get_tasks");
@@ -95,6 +95,9 @@ describe("MCP server integration", { timeout: 15000 }, () => {
     expect(names).toContain("update_task");
     expect(names).toContain("complete_task");
     expect(names).toContain("delete_task");
+    expect(names).toContain("get_projects");
+    expect(names).toContain("get_labels");
+    expect(names).toContain("get_sections");
   });
 
   it("Test 4: missing token exits with code 1", async () => {

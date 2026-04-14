@@ -54,6 +54,13 @@ describe("handleUpdateTask", () => {
     expect(result.content[0].text).toContain("Updated task");
     expect(result.content[0].text).toContain("ID: 55");
   });
+
+  it("forwards section_id to client when provided", async () => {
+    const task = makeTask({ id: "123" });
+    const client = makeClient(task);
+    await handleUpdateTask({ task_id: "123", section_id: "s99" }, client);
+    expect(client.updateTask).toHaveBeenCalledWith("123", { section_id: "s99" });
+  });
 });
 
 describe("UpdateTaskSchema", () => {

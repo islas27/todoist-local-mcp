@@ -30,6 +30,7 @@ export interface GetTasksParams {
 export interface CreateTaskParams {
   content: string;
   project_id?: string;
+  section_id?: string;
   description?: string;
   due_string?: string;
   priority?: 1 | 2 | 3 | 4;
@@ -38,8 +39,35 @@ export interface CreateTaskParams {
 
 export interface UpdateTaskParams {
   content?: string;
+  section_id?: string;
   description?: string;
   due_string?: string;
   priority?: 1 | 2 | 3 | 4;
   labels?: string[];
+}
+
+export interface TodoistProject {
+  id: string;
+  name: string;
+  color: string;
+  parent_id: string | null;
+  inbox_project: boolean;
+  is_favorite: boolean;
+}
+
+export interface TodoistLabel {
+  id: string;
+  name: string;
+  color: string;
+  order: number;
+  is_favorite: boolean;
+}
+
+export interface TodoistSection {
+  id: string;
+  name: string;
+  project_id: string;
+  section_order: number;
+  is_archived: boolean;
+  is_deleted: boolean;
 }
