@@ -30,7 +30,7 @@ Task completion is tracked here. After each delegated task, run `./scripts/valid
 
 ## Phase 3 — Server Wiring
 
-- [ ] **3.1** — MCP server entry point (`src/index.ts`)
+- [x] **3.1** — MCP server entry point (`src/index.ts`)
 
 ---
 
