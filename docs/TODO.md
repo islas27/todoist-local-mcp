@@ -14,7 +14,7 @@ Task completion is tracked here. After each delegated task, run `./scripts/valid
 
 - [x] **1.1** — Project initialization (`package.json`, `tsconfig.json`, `.env.example`, empty dirs, `npm install`)
 - [x] **1.2** — Todoist type definitions (`src/types.ts`)
-- [ ] **1.3** — Todoist HTTP client (`src/todoist-client.ts`)
+- [x] **1.3** — Todoist HTTP client (`src/todoist-client.ts`)
 
 ---
 
