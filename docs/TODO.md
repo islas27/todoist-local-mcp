@@ -36,8 +36,8 @@ Task completion is tracked here. After each delegated task, run `./scripts/valid
 
 ## Phase 4 — Tests
 
-- [ ] **4.1** — Todoist client unit tests (`tests/todoist-client.test.ts`)
-- [ ] **4.2** — Tool handler unit tests (`tests/tools/*.test.ts`)
+- [x] **4.1** — Todoist client unit tests (`tests/todoist-client.test.ts`)
+- [x] **4.2** — Tool handler unit tests (`tests/tools/*.test.ts`)
 - [ ] **4.3** — Integration test (`tests/integration/server.test.ts`)
 
 ---

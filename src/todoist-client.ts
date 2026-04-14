@@ -48,10 +48,11 @@ export class TodoistClient {
 
     if (!response.ok) {
       let errorBody: unknown;
+      const text = await response.text();
       try {
-        errorBody = await response.json();
+        errorBody = JSON.parse(text);
       } catch {
-        errorBody = await response.text();
+        errorBody = text;
       }
       throw new TodoistClientError(
         response.status,
