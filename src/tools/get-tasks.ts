@@ -31,7 +31,7 @@ export async function handleGetTasks(
   tasks.forEach((task, index) => {
     const taskNumber = index + 1;
     const priority = priorityMap[task.priority] || "P4";
-    const firstLine = `${taskNumber}. [${priority}] ${task.content}`;
+    const firstLine = `${taskNumber}. [${priority}] ${task.content} (id: ${task.id})`;
     taskLines.push(firstLine);
 
     if (task.due) {
