@@ -64,6 +64,15 @@ describe("handleCreateTask", () => {
       expect.objectContaining({ section_id: "s42" })
     );
   });
+
+  it("forwards parent_id to client when provided", async () => {
+    const task = makeTask({ id: "11", content: "Subtask" });
+    const client = makeClient(task);
+    await handleCreateTask({ content: "Subtask", parent_id: "parent-123" }, client);
+    expect(client.createTask).toHaveBeenCalledWith(
+      expect.objectContaining({ parent_id: "parent-123" })
+    );
+  });
 });
 
 describe("CreateTaskSchema", () => {
@@ -81,6 +90,12 @@ describe("CreateTaskSchema", () => {
         priority: 1,
         labels: ["work"],
       })
+    ).not.toThrow();
+  });
+
+  it("accepts parent_id for subtask creation", () => {
+    expect(() =>
+      CreateTaskSchema.parse({ content: "Subtask", parent_id: "abc123" })
     ).not.toThrow();
   });
 

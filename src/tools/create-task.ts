@@ -5,6 +5,9 @@ export const CreateTaskSchema = z.object({
   content: z.string(),
   project_id: z.string().optional(),
   section_id: z.string().optional(),
+  parent_id: z.string().optional().describe(
+    "ID of the parent task. Set this to create a subtask under an existing task."
+  ),
   description: z.string().optional(),
   due_string: z.string().optional(),
   priority: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)]).optional().describe(
