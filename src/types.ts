@@ -31,6 +31,7 @@ export interface CreateTaskParams {
   content: string;
   project_id?: string;
   section_id?: string;
+  parent_id?: string;
   description?: string;
   due_string?: string;
   priority?: 1 | 2 | 3 | 4;
