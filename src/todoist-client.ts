@@ -72,10 +72,25 @@ export class TodoistClient {
   }
 
   async getTasks(params?: GetTasksParams): Promise<TodoistTask[]> {
+    if (params?.filter) {
+      if (params.project_id || params.label) {
+        throw new TodoistClientError(
+          400,
+          { error: "filter cannot be combined with project_id or label" },
+          "filter cannot be combined with project_id or label — embed the scope in the filter expression instead (e.g., 'today & #Projects' or 'today & @work'). See https://www.todoist.com/help/articles/introduction-to-filters-V98wIH"
+        );
+      }
+      const query = new URLSearchParams({ query: params.filter });
+      const response = await this.request<{ results: TodoistTask[] }>(
+        "GET",
+        `/tasks/filter?${query.toString()}`
+      );
+      return response.results;
+    }
+
     const query = new URLSearchParams();
     if (params?.project_id) query.set("project_id", params.project_id);
     if (params?.label) query.set("label", params.label);
-    if (params?.filter) query.set("filter", params.filter);
     const qs = query.toString();
     const response = await this.request<{ results: TodoistTask[] }>(
       "GET",

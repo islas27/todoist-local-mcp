@@ -41,6 +41,10 @@ export async function handleGetTasks(
     if (task.labels && task.labels.length > 0) {
       taskLines.push(`  Labels: ${task.labels.join(", ")}`);
     }
+
+    if (task.description && task.description.trim() !== "") {
+      taskLines.push(`  Description: ${task.description}`);
+    }
   });
 
   const text = taskLines.join("\n");

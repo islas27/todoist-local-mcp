@@ -26,7 +26,7 @@ const server = new McpServer({
 
 server.tool(
   "get_tasks",
-  "Retrieve tasks from Todoist, optionally filtered by project, label, or filter string.",
+  'Retrieve tasks from Todoist. Pass project_id and/or label for simple scoping. For date-based or compound queries, use `filter` with Todoist filter syntax (e.g., "today", "overdue", "today & #Projects", "@work & 7 days"). Note: `filter` cannot be combined with `project_id` or `label` — embed the scope in the filter expression instead. The filter language scopes projects by NAME, not ID (e.g., `#Projects`), so use `get_projects` first to look up the exact name; if the name has spaces or special characters, quote it as `#"My Project"`. Output omits the Description line entirely when a task has no description recorded. Filter docs: https://www.todoist.com/help/articles/introduction-to-filters-V98wIH',
   GetTasksSchema.shape,
   async (input) => handleGetTasks(input, client)
 );

@@ -81,6 +81,26 @@ describe("handleGetTasks", () => {
     const result = await handleGetTasks({}, client);
     expect(result.content[0].text).toContain("Labels: work, urgent");
   });
+
+  it("includes description in output when non-empty", async () => {
+    const client = makeClient([
+      makeTask({ description: "Some helpful context" }),
+    ]);
+    const result = await handleGetTasks({}, client);
+    expect(result.content[0].text).toContain("Description: Some helpful context");
+  });
+
+  it("omits description line when description is empty string", async () => {
+    const client = makeClient([makeTask({ description: "" })]);
+    const result = await handleGetTasks({}, client);
+    expect(result.content[0].text).not.toContain("Description:");
+  });
+
+  it("omits description line when description is whitespace only", async () => {
+    const client = makeClient([makeTask({ description: "   \n  " })]);
+    const result = await handleGetTasks({}, client);
+    expect(result.content[0].text).not.toContain("Description:");
+  });
 });
 
 describe("GetTasksSchema", () => {
