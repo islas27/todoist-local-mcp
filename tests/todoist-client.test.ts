@@ -84,10 +84,46 @@ describe("TodoistClient", () => {
       expect(mockFetch.mock.calls[0][0]).toContain("label=work");
     });
 
-    it("adds filter to query string", async () => {
+    it("routes filter calls to /tasks/filter with query param (not /tasks?filter=)", async () => {
       mockFetch.mockResolvedValue(ok({ results: [] }));
       await client.getTasks({ filter: "today" });
-      expect(mockFetch.mock.calls[0][0]).toContain("filter=today");
+      expect(mockFetch.mock.calls[0][0]).toBe(`${BASE_URL}/tasks/filter?query=today`);
+    });
+
+    it("URL-encodes compound filter expressions", async () => {
+      mockFetch.mockResolvedValue(ok({ results: [] }));
+      await client.getTasks({ filter: "today & #Projects" });
+      const url = mockFetch.mock.calls[0][0] as string;
+      expect(url.startsWith(`${BASE_URL}/tasks/filter?query=`)).toBe(true);
+      expect(url).toContain("today");
+      expect(url).toContain("Projects");
+      // Spaces and `&` and `#` must be encoded so they aren't parsed as URL syntax
+      expect(url).not.toContain("query=today & #Projects");
+    });
+
+    it("rejects filter combined with project_id without making a request", async () => {
+      const err = await client
+        .getTasks({ filter: "today", project_id: "abc" })
+        .catch((e) => e);
+      expect(err).toBeInstanceOf(TodoistClientError);
+      expect(err.status).toBe(400);
+      expect(err.message).toMatch(/embed the scope in the filter expression/i);
+      expect(mockFetch).not.toHaveBeenCalled();
+    });
+
+    it("rejects filter combined with label without making a request", async () => {
+      const err = await client
+        .getTasks({ filter: "today", label: "work" })
+        .catch((e) => e);
+      expect(err).toBeInstanceOf(TodoistClientError);
+      expect(err.status).toBe(400);
+      expect(mockFetch).not.toHaveBeenCalled();
+    });
+
+    it("hits /tasks (not /tasks/filter) when only project_id is provided", async () => {
+      mockFetch.mockResolvedValue(ok({ results: [] }));
+      await client.getTasks({ project_id: "abc" });
+      expect(mockFetch.mock.calls[0][0]).toBe(`${BASE_URL}/tasks?project_id=abc`);
     });
 
     it("returns parsed TodoistTask array", async () => {
